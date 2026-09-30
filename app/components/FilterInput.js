@@ -1,6 +1,6 @@
 "use client";
 
-export default function FilterInput({ value, onChange }) {
+const FilterInput = ({ value, onChange }) => {
     return (
         <input
             type="text"
@@ -10,4 +10,6 @@ export default function FilterInput({ value, onChange }) {
             className="border rounded px-3 py-2 text-gray-900"
         />
     );
-}
+};
+
+export default FilterInput;

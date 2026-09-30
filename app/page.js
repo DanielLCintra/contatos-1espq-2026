@@ -1,13 +1,32 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 import FilterInput from "./components/FilterInput";
+import Statistics from "./components/Statistics";
 
 const HomePage = () => {
   const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("")
   const [isLoaded, setIsLoaded] = useState(false)
+
+  const filteredContacts = useMemo(() => {
+    console.log('Filtrando contatos...');
+
+    if (!filter.trim()) {
+      return contacts;
+    }
+
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  const handleSubmit = (newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  };
 
   useEffect(() => {
     const savedContacts = localStorage.getItem('contatos');
@@ -23,10 +42,22 @@ const HomePage = () => {
     }
   }, [contacts, isLoaded]);
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
-    contact.email.toLowerCase().includes(filter.toLowerCase())
-  );
+  const stats = useMemo(() => {
+    console.log('Calculando estatísticas...');
+
+    const total = contacts.length;
+    const comEmail = contacts.filter(c => c.email).length;
+    const comTelefone = contacts.filter(c => c.telefone).length;
+
+    return {
+      total,
+      comEmail,
+      comTelefone,
+      semEmail: total - comEmail,
+      semTelefone: total - comTelefone
+    };
+  }, [contacts]);
+
 
   return (
     <div className="min-h-screen bg-gray-200 p-6">
@@ -41,6 +72,8 @@ const HomePage = () => {
 
         {/* ===== FORMULÁRIO ===== */}
         <ContactForm setContacts={setContacts} />
+
+        <Statistics stats={stats} />
 
         {/* ===== LISTA DE CONTATOS ===== */}
         <ContactList contacts={filteredContacts} setContacts={setContacts} />

@@ -1,12 +1,14 @@
+// app/contact/[id]/page.js
 "use client";
+
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const ContactDetailPage = () => {
     const params = useParams();           // { id: "1234567890" }
     const router = useRouter();           // para navegar programaticamente
-    const [contact, setContact] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [contact, setContact] = useState({ id: null, nome: null, email: null });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Buscar contatos do localStorage
@@ -28,7 +30,6 @@ const ContactDetailPage = () => {
         setLoading(false);
     }, [params.id, router]);
 
-
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 p-6">
@@ -40,7 +41,6 @@ const ContactDetailPage = () => {
             </div>
         );
     }
-
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">

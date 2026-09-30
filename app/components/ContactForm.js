@@ -1,10 +1,15 @@
 'use client'
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const ContactForm = ({ setContacts }) => {
     const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
     const [errors, setErrors] = useState({})
+    const nomeInputRef = useRef(null)
+
+    useEffect(() => {
+        nomeInputRef.current.focus()
+    }, [])
 
     const validate = () => {
         const newErrors = {};
@@ -13,12 +18,12 @@ const ContactForm = ({ setContacts }) => {
             newErrors.email = "Email inválido";
         }
         return newErrors;
-    }
+    };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
 
-        const newErrors = validate();
+        const newErrors = validate()
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -27,13 +32,13 @@ const ContactForm = ({ setContacts }) => {
 
         setContacts((prev) => [...prev, { ...form, id: Date.now() }]);
         setForm({ nome: "", email: "", telefone: "" });
-        setErrors({});
-    };
+        nomeInputRef.current.focus()
+    }, []);
 
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
-    };
+    }, []);
 
     return (
         <form
@@ -45,6 +50,7 @@ const ContactForm = ({ setContacts }) => {
                     Nome <span className="text-red-500">*</span>
                 </label>
                 <input
+                    ref={nomeInputRef}
                     name="nome"
                     className={`w-full border rounded px-3 py-2 text-gray-900 ${errors.nome ? "border-red-500" : "border-gray-300"
                         }`}
