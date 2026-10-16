@@ -1,6 +1,7 @@
 'use client'
 import Link from "next/link"
 import { memo } from "react"
+import Button from "./ui/Button"
 
 const ContactItem = memo(({ contact, handleRemove, ...props }) => {
 
@@ -17,12 +18,12 @@ const ContactItem = memo(({ contact, handleRemove, ...props }) => {
                     {contact.email} • {contact.telefone}
                 </p>
             </div>
-            <button
+            <Button
+                variant="danger"
                 onClick={() => handleRemove(contact.id)}
-                className="text-red-600 hover:text-red-700 px-2 py-1 rounded"
             >
                 Excluir
-            </button>
+            </Button>
         </li>
     )
 })

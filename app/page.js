@@ -1,28 +1,24 @@
 "use client";
-import { useMemo } from "react";
 import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 import FilterInput from "./components/FilterInput";
 import Statistics from "./components/Statistics";
+import PageHeader from "./components/ui/PageHeader";
 import { useContactsContext } from "./contexts/ContactsContext";
 import useFilter from "./hooks/useFilter";
 import useStatistics from "./hooks/useStatistics";
 
 const HomePage = () => {
-  const contactsData = useContactsContext()
-  const filterData = useFilter(contactsData.contacts)
-  const stats = useStatistics(contactsData.contacts)
+  const { contacts } = useContactsContext()
+  const filterData = useFilter(contacts)
+  const stats = useStatistics(contacts)
 
   return (
     <div className="min-h-screen bg-gray-200 p-6">
       <div className="max-w-3xl mx-auto space-y-6">
-        <header className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">
-            Cadastro de Contatos
-          </h1>
-
+        <PageHeader title="Cadastro de Contatos">
           <FilterInput value={filterData.filter} onChange={filterData.handleFilterChange} />
-        </header>
+        </PageHeader>
 
         {/* ===== FORMULÁRIO ===== */}
         <ContactForm />
@@ -30,7 +26,7 @@ const HomePage = () => {
         <Statistics stats={stats} />
 
         {/* ===== LISTA DE CONTATOS ===== */}
-        <ContactList contacts={filterData.filteredContacts} setContacts={contactsData.setContacts} />
+        <ContactList contacts={filterData.filteredContacts} />
       </div>
     </div>
   );

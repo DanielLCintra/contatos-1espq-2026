@@ -1,6 +1,7 @@
 'use client'
 import useForm from "../hooks/useForm";
 import TextInput from "./TextInput";
+import Button from "./ui/Button";
 
 const ContactForm = () => {
     const {
@@ -41,12 +42,9 @@ const ContactForm = () => {
                 errors={errors.telefone}
             />
 
-            <button
-                type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-            >
+            <Button type="submit" variant="primary">
                 Adicionar Contato
-            </button>
+            </Button>
         </form>
     )
 }

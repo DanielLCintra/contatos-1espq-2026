@@ -56,10 +56,13 @@ export const ContactsProvider = ({ children }) => {
     // Buscar contato específico por ID
     const getContact = useCallback(async (id) => {
         try {
+            setLoading(true);
             const response = await contactsApi.get(`/contatos/${id}`);
             setContact(response.data);
+            setLoading(false);
         } catch (error) {
             setError('Erro ao buscar contato:', error);
+            setLoading(false);
         }
     }, []);
 
